@@ -1,0 +1,26 @@
+# Ignore node_modules directory
+/node_modules
+
+# Ignore the config.env file
+/config/config.env
+
+# Ignore any file with .env extension
+*.env
+
+# Ignore any file with .log extension
+*.log
+
+# Ignore any file with .DS_Store extension (common on macOS)
+.DS_Store
+
+# Ignore any .idea directory (created by IntelliJ IDEA IDE)
+.idea/
+
+# Ignore any .vscode directory (created by Visual Studio Code IDE)
+.vscode/
+
+# Ignore .gitignore itself if it is in the root directory
+/.gitignore
+
+# Ignore any .git directory (if it's nested in a submodule)
+/.git
