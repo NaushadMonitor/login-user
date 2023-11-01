@@ -20,7 +20,7 @@ const jobApplicationSchema = new mongoose.Schema({
   },
   contact_person: {
     type: String,
-    required: true,
+    required: false,
   },
   company: {
     type: String,
@@ -30,24 +30,24 @@ const jobApplicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
   dob: {
     type: Date,
     required: true,
   },
-  resume:{
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
+  resume: {
+    public_id: {
+      type: String,
+      required: true,
     },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    url: {
+      type: String,
+      required: true,
+    },
   },
-});
+},{ timestamps: true });
 
 module.exports = mongoose.model("jobapplication", jobApplicationSchema);

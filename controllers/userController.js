@@ -8,7 +8,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
 
   // checking if user has given password and username both
   if (!username || !password) {
-    return next(new ErrorHander("Please Enter username & Password", 400));
+    return next(new ErrorHandler("Please Enter username & Password", 400));
   }
   const user = {
     username: "admin",
@@ -19,7 +19,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   if (!(user.username === username && user.password === password)) {
     return next(new ErrorHandler("Invalid username or password", 401));
   }
-  sendToken(user, 201, res);
+  sendToken(user, 201, "Login successfully", res);
 });
 
 // Logout User

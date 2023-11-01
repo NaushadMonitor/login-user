@@ -1,6 +1,6 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const JobListing = require("../models/jobListing");
-const { filterPagination } = require('../utils/apifeatures');
+const { filterPagination } = require("../utils/apifeatures");
 const ErrorHandler = require("../utils/errorhander");
 
 exports.addJob = catchAsyncErrors(async (req, res, next) => {
@@ -15,7 +15,7 @@ exports.addJob = catchAsyncErrors(async (req, res, next) => {
     gender,
     description,
     work_type,
-    address,
+    owner_address,
     contact_person,
     timing,
     status,
@@ -32,7 +32,7 @@ exports.addJob = catchAsyncErrors(async (req, res, next) => {
     gender,
     description,
     work_type,
-    address,
+    owner_address,
     contact_person,
     timing,
     status,
@@ -45,35 +45,43 @@ exports.addJob = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getActiveJob = catchAsyncErrors(async (req, res, next) => {
-    const page = parseInt(req.query.page) || 1; 
-    const resultPerPage = 2; 
-  
-    const activeJob = await filterPagination(JobListing, page, resultPerPage, { status: true });
-  
-    if (activeJob.results.length === 0) {
-      return next(new ErrorHandler(`No applications found for page ${page}`, 404));
-    }
-  
-    res.status(200).json({
-      success: true,
-      ...activeJob,
-    });
+  const page = parseInt(req.query.page) || 1;
+  const resultPerPage = parseInt(req.query.perPage) || 10;
+
+  const activeJob = await filterPagination(JobListing, page, resultPerPage, {
+    status: true,
   });
 
+  if (activeJob.results.length === 0) {
+    return next(
+      new ErrorHandler(`No applications found for page ${page}`, 404)
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    ...activeJob,
+  });
+});
+
 exports.getInActiveJob = catchAsyncErrors(async (req, res, next) => {
-    const page = parseInt(req.query.page) || 1; 
-    const resultPerPage = 2; 
+  const resultPerPage = parseInt(req.query.perPage) || 10;
+  const page = parseInt(req.query.page) || 1;
   
-    const inActiveJob = await filterPagination(JobListing, page, resultPerPage, { status: false });
-  
-    if (inActiveJob.results.length === 0) {
-      return next(new ErrorHandler(`No applications found for page ${page}`, 404));
-    }
-  
-    res.status(200).json({
-      success: true,
-      ...inActiveJob,
-    });
+  const inActiveJob = await filterPagination(JobListing, page, resultPerPage, {
+    status: false,
+  });
+
+  if (inActiveJob.results.length === 0) {
+    return next(
+      new ErrorHandler(`No applications found for page ${page}`, 404)
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    ...inActiveJob,
+  });
 });
 
 exports.updateJobListing = catchAsyncErrors(async (req, res, next) => {
@@ -88,7 +96,7 @@ exports.updateJobListing = catchAsyncErrors(async (req, res, next) => {
     gender,
     description,
     work_type,
-    address,
+    owner_address,
     contact_person,
     timing,
     status,
@@ -104,7 +112,7 @@ exports.updateJobListing = catchAsyncErrors(async (req, res, next) => {
     gender,
     description,
     work_type,
-    address,
+    owner_address,
     contact_person,
     timing,
     status,

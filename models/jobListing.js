@@ -41,7 +41,7 @@ const jobListingSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  address: {
+  owner_address: {
     type: String,
     required: true
   },
@@ -56,8 +56,9 @@ const jobListingSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     required: true
-  } 
-});
+  },
+ 
+},{ timestamps: true });
 
 module.exports = mongoose.model("joblistings", jobListingSchema);
 

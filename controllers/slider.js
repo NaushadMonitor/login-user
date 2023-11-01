@@ -4,7 +4,13 @@ const cloudinary = require("cloudinary");
 const ErrorHandler = require("../utils/errorhander");
 
 exports.uploadImage = catchAsyncErrors(async (req, res, next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
+  if (!req.files || !req.files.image) {
+    return next(
+      new ErrorHandler(`please select a file`, 400)
+    );
+  }
+  const image = req.files.image;
+  const myCloud = await cloudinary.v2.uploader.upload(image.tempFilePath, {
     folder: "slider",
   });
 
@@ -20,6 +26,7 @@ exports.uploadImage = catchAsyncErrors(async (req, res, next) => {
     message: "Image uploaded successfully.",
   });
 });
+
 
 exports.updateImage = catchAsyncErrors(async (req, res, next) => {
   const { status } = req.body;

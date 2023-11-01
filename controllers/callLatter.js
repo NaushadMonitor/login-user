@@ -2,10 +2,19 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const Latter = require("../models/callLatter");
 const cloudinary = require("cloudinary");
 const ErrorHandler = require("../utils/errorhander");
+const { pagination } = require("../utils/apifeatures");
 
 exports.addLatter = catchAsyncErrors(async (req, res, next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.latter, {
+  
+  if (!req.files || !req.files.latter) {
+    return next(
+      new ErrorHandler(`please select a file`, 400)
+    );
+  }
+  const latter = req.files.latter;
+  const myCloud = await cloudinary.v2.uploader.upload(latter.tempFilePath, {
     folder: "latter",
+    resource_type: 'auto'
   });
 
   await Latter.create({
@@ -25,14 +34,18 @@ exports.addLatter = catchAsyncErrors(async (req, res, next) => {
 
 
 exports.getLatter = catchAsyncErrors(async (req, res, next) => {
-  const latters = await Latter.find();
+  const page = parseInt(req.query.page) || 1; 
+  const resultPerPage = parseInt(req.query.perPage) || 10; 
 
-  if (!latters) {
-    return next(new ErrorHandler(`Not found call latter`, 400));
+  const latter = await pagination(Latter, page, resultPerPage);
+
+  if (latter.results.length === 0) {
+    return next(new ErrorHandler(`No applications found for page ${page}`, 404));
   }
 
   res.status(200).json({
     success: true,
-    latters,
+    ...latter,
   });
 });
+

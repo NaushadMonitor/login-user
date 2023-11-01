@@ -43,7 +43,7 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
 
 exports.getCategory = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
-  const resultPerPage = 2;
+  const resultPerPage = parseInt(req.query.perPage) || 10;
 
   const category = await pagination(jobCategory, page, resultPerPage);
 
