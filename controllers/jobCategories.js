@@ -1,6 +1,6 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const jobCategory = require("../models/jobCategories");
-const { pagination } = require('../utils/apifeatures');
+const { pagination } = require("../utils/apifeatures");
 const ErrorHandler = require("../utils/errorhander");
 
 exports.addCategory = catchAsyncErrors(async (req, res, next) => {
@@ -62,7 +62,7 @@ exports.deleteCategory = catchAsyncErrors(async (req, res, next) => {
 
   if (!category) {
     return next(
-      new ErrorHander(`category does not exist with Id: ${req.params.id}`, 400)
+      new ErrorHandler(`category does not exist with Id: ${req.params.id}`, 400)
     );
   }
 

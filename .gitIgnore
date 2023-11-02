@@ -2,10 +2,10 @@
 /node_modules
 
 # Ignore the config.env file
-/config/config.env
+*/config/config.env/
 
 # Ignore any file with .env extension
-*.env
+# *.env
 
 # Ignore any file with .log extension
 *.log
