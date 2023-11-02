@@ -1,6 +1,6 @@
 version : "3.3"
 services :
   web :
-     image : destiny/destiny_backend:latest
+     image : destinyit/destiny_backend:latest
      ports :
          - "80:4000"
