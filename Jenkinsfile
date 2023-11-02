@@ -5,7 +5,7 @@ pipeline {
         stage("Clone Code"){
             steps {
                 echo "Cloning the code"
-                git url:"https://github.com/dest-sandeep/destiny_backend_admin.git", branch: "main"
+                git url:"https://github.com/code-react/destiny_backend.git", branch: "main"
             }
         }
         stage("Build"){
