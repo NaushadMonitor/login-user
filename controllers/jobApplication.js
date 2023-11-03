@@ -2,12 +2,16 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const JobApplication = require("../models/jobApplication");
 const cloudinary = require("cloudinary");
 const ErrorHandler = require("../utils/errorhander");
-const { pagination } = require('../utils/apifeatures');
-
+const { pagination } = require("../utils/apifeatures");
 
 exports.jobApply = catchAsyncErrors(async (req, res, next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.resume, {
-    // resource_type: "raw",
+  if (!req.files || !req.files.resume) {
+    return next(new ErrorHandler(`please select a file`, 400));
+  }
+  const resume = req.files.resume;
+
+  const myCloud = await cloudinary.v2.uploader.upload(resume.tempFilePath, {
+    resource_type: "auto",
     folder: "resume",
   });
 
@@ -35,16 +39,16 @@ exports.jobApply = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
-
 exports.getApplication = catchAsyncErrors(async (req, res, next) => {
-  const page = parseInt(req.query.page) || 1; 
-  const resultPerPage = parseInt(req.query.perPage) || 10; 
+  const page = parseInt(req.query.page) || 1;
+  const resultPerPage = parseInt(req.query.perPage) || 10;
 
   const applications = await pagination(JobApplication, page, resultPerPage);
 
   if (applications.results.length === 0) {
-    return next(new ErrorHandler(`No applications found for page ${page}`, 404));
+    return next(
+      new ErrorHandler(`No applications found for page ${page}`, 404)
+    );
   }
 
   res.status(200).json({
