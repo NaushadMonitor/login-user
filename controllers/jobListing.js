@@ -48,16 +48,22 @@ exports.getActiveJob = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
   const searchQuery = req.query.query;
-  const query = {
-    $or: [
-      { jobtitle: { $regex: searchQuery, $options: "i" } },
-      { companyname: { $regex: searchQuery, $options: "i" } },
-      { contact_person: { $regex: searchQuery, $options: "i" } },
-    ],
-  };
-query.status=true
 
-  const activeJob = await filterPagination(JobListing, page, resultPerPage, query);
+  const activeJob = await filterPagination(
+    JobListing,
+    page,
+    resultPerPage,
+    searchQuery,
+    {
+      status: true,
+    }
+  );
+
+  if (activeJob.length === 0) {
+    return next(
+      new ErrorHandler(`No applications found for page ${page}`, 404)
+    );
+  }
 
   res.status(200).json({
     success: true,
@@ -69,15 +75,22 @@ exports.getInActiveJob = catchAsyncErrors(async (req, res, next) => {
   const resultPerPage = parseInt(req.query.perPage) || 10;
   const page = parseInt(req.query.page) || 1;
   const searchQuery = req.query.query;
-    const query = {
-      $or: [
-        { jobtitle: { $regex: searchQuery, $options: "i" } },
-        { companyname: { $regex: searchQuery, $options: "i" } },
-        { contact_person: { $regex: searchQuery, $options: "i" } },
-      ],
-    };
-  query.status=false
-  const inActiveJob = await filterPagination(JobListing, page, resultPerPage,query);
+
+  const inActiveJob = await filterPagination(
+    JobListing,
+    page,
+    resultPerPage,
+    searchQuery,
+    {
+      status: false,
+    }
+  );
+
+  if (inActiveJob.length === 0) {
+    return next(
+      new ErrorHandler(`No applications found for page ${page}`, 404)
+    );
+  }
 
   res.status(200).json({
     success: true,
