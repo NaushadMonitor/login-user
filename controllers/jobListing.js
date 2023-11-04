@@ -90,7 +90,6 @@ exports.getInActiveJob = catchAsyncErrors(async (req, res, next) => {
       new ErrorHandler(`No applications found for page ${page}`, 404)
     );
   }
-
   res.status(200).json({
     success: true,
     ...inActiveJob,
