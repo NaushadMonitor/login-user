@@ -146,3 +146,18 @@ exports.deleteJob = catchAsyncErrors(async (req, res, next) => {
     message: "Job Deleted Successfully",
   });
 });
+
+exports.getSingleJob = catchAsyncErrors(async (req, res, next) => {
+  const job = await JobListing.findById(req.params.id);
+
+  if (!job) {
+    return next(
+      new ErrorHandler(`job does not exist with Id: ${req.params.id}`, 400)
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    job,
+  });
+});

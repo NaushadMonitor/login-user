@@ -41,6 +41,21 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+exports.getSingleCategory = catchAsyncErrors(async (req, res, next) => {
+  const category = await jobCategory.findById(req.params.id);
+
+  if (!category) {
+    return next(
+      new ErrorHandler(`categry does not exist with Id: ${req.params.id}`, 400)
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    category,
+  });
+});
+
 exports.getCategory = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
