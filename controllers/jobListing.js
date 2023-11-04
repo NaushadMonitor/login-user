@@ -59,12 +59,6 @@ query.status=true
 
   const activeJob = await filterPagination(JobListing, page, resultPerPage, query);
 
-  if (activeJob.results.length === 0) {
-    return next(
-      new ErrorHandler(`No applications found for page ${page}`, 404)
-    );
-  }
-
   res.status(200).json({
     success: true,
     ...activeJob,
@@ -85,11 +79,6 @@ exports.getInActiveJob = catchAsyncErrors(async (req, res, next) => {
   query.status=false
   const inActiveJob = await filterPagination(JobListing, page, resultPerPage,query);
 
-  if (inActiveJob.results.length === 0) {
-    return next(
-      new ErrorHandler(`No applications found for page ${page}`, 404)
-    );
-  }
   res.status(200).json({
     success: true,
     ...inActiveJob,
