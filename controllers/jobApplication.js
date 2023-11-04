@@ -42,7 +42,6 @@ exports.jobApply = catchAsyncErrors(async (req, res, next) => {
 exports.getApplication = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
-
   const applications = await pagination(JobApplication, page, resultPerPage);
 
   if (applications.results.length === 0) {

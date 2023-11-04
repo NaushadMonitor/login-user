@@ -47,10 +47,17 @@ exports.addJob = catchAsyncErrors(async (req, res, next) => {
 exports.getActiveJob = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
+  const searchQuery = req.query.query;
+  const query = {
+    $or: [
+      { jobtitle: { $regex: searchQuery, $options: "i" } },
+      { companyname: { $regex: searchQuery, $options: "i" } },
+      { contact_person: { $regex: searchQuery, $options: "i" } },
+    ],
+  };
+query.status=true
 
-  const activeJob = await filterPagination(JobListing, page, resultPerPage, {
-    status: true,
-  });
+  const activeJob = await filterPagination(JobListing, page, resultPerPage, query);
 
   if (activeJob.results.length === 0) {
     return next(
@@ -67,10 +74,16 @@ exports.getActiveJob = catchAsyncErrors(async (req, res, next) => {
 exports.getInActiveJob = catchAsyncErrors(async (req, res, next) => {
   const resultPerPage = parseInt(req.query.perPage) || 10;
   const page = parseInt(req.query.page) || 1;
-  
-  const inActiveJob = await filterPagination(JobListing, page, resultPerPage, {
-    status: false,
-  });
+  const searchQuery = req.query.query;
+    const query = {
+      $or: [
+        { jobtitle: { $regex: searchQuery, $options: "i" } },
+        { companyname: { $regex: searchQuery, $options: "i" } },
+        { contact_person: { $regex: searchQuery, $options: "i" } },
+      ],
+    };
+  query.status=false
+  const inActiveJob = await filterPagination(JobListing, page, resultPerPage,query);
 
   if (inActiveJob.results.length === 0) {
     return next(
