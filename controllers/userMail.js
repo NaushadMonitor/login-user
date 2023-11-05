@@ -24,11 +24,13 @@ exports.CreatUserMail = catchAsyncErrors(async (req, res, next) => {
 exports.getUserMail = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
+  const searchQuery = req.query.query || '';
 
-  const usermail = await pagination(userMail, page, resultPerPage);
+
+  const usermail = await pagination(userMail, page, resultPerPage, searchQuery);
 
   if (usermail.results.length === 0) {
-    return next(new ErrorHandler(`No user mail found for page ${page}`, 404));
+    return next(new ErrorHandler(`No user mail found`, 200));
   }
 
   res.status(200).json({

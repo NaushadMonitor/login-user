@@ -42,11 +42,14 @@ exports.jobApply = catchAsyncErrors(async (req, res, next) => {
 exports.getApplication = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
-  const applications = await pagination(JobApplication, page, resultPerPage);
+  const searchQuery = req.query.query || '';
+
+
+  const applications = await pagination(JobApplication, page, resultPerPage, searchQuery);
 
   if (applications.results.length === 0) {
     return next(
-      new ErrorHandler(`No applications found for page ${page}`, 404)
+      new ErrorHandler(`No applications found `, 200)
     );
   }
 

@@ -59,11 +59,13 @@ exports.getSingleCategory = catchAsyncErrors(async (req, res, next) => {
 exports.getCategory = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
+  const searchQuery = req.query.query || '';
 
-  const category = await pagination(jobCategory, page, resultPerPage);
+
+  const category = await pagination(jobCategory, page, resultPerPage, searchQuery);
 
   if (category.results.length === 0) {
-    return next(new ErrorHandler(`No category found for page ${page}`, 404));
+    return next(new ErrorHandler(`No category found`, 200));
   }
 
   res.status(200).json({

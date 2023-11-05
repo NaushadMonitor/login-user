@@ -31,12 +31,14 @@ exports.addLatter = catchAsyncErrors(async (req, res, next) => {
 exports.getLatter = catchAsyncErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const resultPerPage = parseInt(req.query.perPage) || 10;
+  const searchQuery = req.query.query || '';
 
-  const latter = await pagination(Latter, page, resultPerPage);
+
+  const latter = await pagination(Latter, page, resultPerPage, searchQuery);
 
   if (latter.results.length === 0) {
     return next(
-      new ErrorHandler(`No applications found for page ${page}`, 404)
+      new ErrorHandler(`No latter found`, 200)
     );
   }
 
