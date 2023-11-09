@@ -8,5 +8,4 @@ class ErrorHander extends Error{
     }
     
 }
-
-module.exports = ErrorHander
+export default ErrorHander

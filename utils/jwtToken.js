@@ -1,6 +1,4 @@
-// Create Token and saving in cookie
-
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 const sendToken = (user, statusCode, message, res) => {
   
    const token =jwt.sign({username:user.username }, process.env.JWT_SECRET, {
@@ -22,4 +20,4 @@ const sendToken = (user, statusCode, message, res) => {
   });
 };
 
-module.exports = sendToken;
+export default sendToken;

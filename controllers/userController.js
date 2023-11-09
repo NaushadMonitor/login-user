@@ -1,9 +1,9 @@
-const ErrorHandler = require("../utils/errorhander");
-const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const sendToken = require("../utils/jwtToken");
+import  ErrorHandler  from "../utils/errorhander.js";
+import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
+import sendToken from "../utils/jwtToken.js";
 
 // Login User
-exports.loginUser = catchAsyncErrors(async (req, res, next) => {
+const loginUser = catchAsyncErrors(async (req, res, next) => {
   const { username, password } = req.body;
 
   // checking if user has given password and username both
@@ -23,7 +23,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Logout User
-exports.logout = catchAsyncErrors(async (req, res, next) => {
+const logout = catchAsyncErrors(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
@@ -34,3 +34,5 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     message: "Logged Out",
   });
 });
+
+export {loginUser, logout}
